@@ -1,12 +1,30 @@
 <template>
   <div id="app">
-    <h1 class="page-title ml-3">notes.</h1>
+    <header class="flex justify-between items-center">
+      <router-link to="/"><h1 class="page-title ml-3">notes.</h1></router-link>
+      <button @click="logout" class="btn-main mr-3">
+        Logout
+      </button>
+    </header>
     <router-view />
-    <section class="flex justify-center">
-      <p class="m-auto">Made with Vue</p>
-    </section>
+    <footer class="flex justify-center">
+      <p class="m-auto text-sm font-light text-gray-500">Made with Vue</p>
+    </footer>
   </div>
 </template>
+<script lang="ts">
+import Vue from "vue"
+export default Vue.extend({
+  methods: {
+    logout(e: any) {
+      e.preventDefault()
+      localStorage.removeItem("token")
+      localStorage.removeItem("user")
+      this.$router.push("/")
+    }
+  }
+})
+</script>
 
 <style lang="scss">
 @import url("https://fonts.googleapis.com/css?family=Cedarville+Cursive&display=swap");
