@@ -1,9 +1,19 @@
 <template>
-  <div class="home h-full w-4/5 m-auto mt-8">
-    <router-link to="/note" class="btn-main bg-red-500 hover:bg-red-400"
-      >Create new</router-link
-    >
-    <note-card v-for="n in notes" :key="n._id" :note="n" />
+  <div class="home h-full w-4/5 lg:w-3/4 m-auto">
+    <section class="my-8">
+      <router-link to="/note" class="btn-main bg-red-500 hover:bg-red-400"
+        >Create new</router-link
+      >
+    </section>
+
+    <section class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <note-card
+        v-for="n in notes"
+        :key="n._id"
+        :note="n"
+        class="cursor-pointer"
+      />
+    </section>
   </div>
 </template>
 
@@ -37,6 +47,7 @@ export default {
     } else {
       this.alert = await result.json()
     }
-  }
+  },
+  methods: {}
 }
 </script>
