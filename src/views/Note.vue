@@ -1,12 +1,13 @@
 <template>
-  <div class="h-full">
-    <form @submit="saveNote" class="w-2/5 m-auto flex flex-col">
+  <div class="h-full  w-5/6 lg:w-2/5 m-auto">
+    <form @submit="saveNote" class="flex flex-col">
       <div class="note-header flex items-end my-5">
         <h2 contenteditable :v-text="title" @blur="onEdit" class=" w-3/5 mr-4">
           {{ title }}
         </h2>
         <category-selector
           v-on:change-category="onChangeCategory"
+          categorySelected="category"
           class="ml-auto"
         />
       </div>
@@ -22,9 +23,11 @@
         <button class="btn-main bg-red-700 hover:bg-red-500">Delete</button>
         <button class="btn-main ml-auto" type="submit">Save</button>
       </div>
-
-      <div v-html="compiledMarkdown"></div>
     </form>
+    <section class="my-6 bg-gray-200 p-4 rounded-sm">
+      <h3>Preview</h3>
+      <div v-html="compiledMarkdown"></div>
+    </section>
   </div>
 </template>
 
@@ -32,6 +35,7 @@
 import marked from "marked"
 import CategorySelector from "../components/CategorySelector"
 export default {
+  name: "Note",
   components: {
     CategorySelector
   },
@@ -41,7 +45,7 @@ export default {
         return {
           title: "New note",
           body: "",
-          category: "work"
+          category: "Work"
         }
       }
     }
@@ -71,7 +75,6 @@ export default {
     },
     async saveNote(e) {
       e.preventDefault()
-      console.log("he")
       let result
       const uid = JSON.parse(localStorage.getItem("user"))._id
       if (this.note._id) {
@@ -107,8 +110,7 @@ export default {
         })
       }
       if (result.ok) {
-        this.notes = await result.json()
-        console.log(this.notes)
+        this.$router.push("/notes")
       } else {
         this.alert = await result.json()
       }

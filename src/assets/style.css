@@ -1,7 +1,23 @@
 @tailwind base;
 
+h1 {
+  @apply text-2xl;
+}
+
 h2 {
   @apply text-xl font-bold;
+}
+
+h3 {
+  @apply text-lg font-bold;
+}
+
+ul {
+  @apply list-disc;
+}
+
+ol {
+  @apply list-decimal;
 }
 
 @tailwind components;

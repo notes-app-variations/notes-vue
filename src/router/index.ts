@@ -26,6 +26,7 @@ const routes = [
     path: "/note",
     name: "Note",
     component: () => import("../views/Note.vue"),
+    props: true,
     meta: {
       requiresAuth: true
     }
