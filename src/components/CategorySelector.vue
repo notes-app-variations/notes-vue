@@ -36,7 +36,7 @@ export default {
   data() {
     return {
       selected: this.categorySelected,
-      categories: ["Work", "Personal", "Todo"]
+      categories: ["Work", "Personal", "Todo", "Links"]
     }
   },
   methods: {
