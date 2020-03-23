@@ -1,7 +1,9 @@
 <template>
   <div id="app">
     <header class="flex justify-between items-center">
-      <router-link to="/"><h1 class="page-title ml-3">notes.</h1></router-link>
+      <router-link to="/"
+        ><h1 class="page-title text-gray-900 ml-3">notes.</h1></router-link
+      >
       <button @click="logout" class="btn-main mr-3">
         Logout
       </button>
