@@ -29,14 +29,25 @@ export default {
   props: {
     categorySelected: {
       default() {
-        return "Work"
+        return this.hasOptionForAll ? "All" : "Work"
+      }
+    },
+    hasOptionForAll: {
+      default() {
+        return false
       }
     }
   },
   data() {
     return {
-      selected: this.categorySelected,
-      categories: ["Work", "Personal", "Todo", "Links"]
+      selected: this.categorySelected
+    }
+  },
+  computed: {
+    categories() {
+      const items = ["Work", "Personal", "Todo", "Links"]
+      if (this.hasOptionForAll) items.unshift("All")
+      return items
     }
   },
   methods: {
