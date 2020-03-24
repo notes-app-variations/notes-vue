@@ -7,12 +7,18 @@
         </h2>
         <category-selector
           v-on:change-category="onChangeCategory"
-          categorySelected="category"
+          :categorySelected="category"
+          :hasOptionForAll="false"
           class="ml-auto"
         />
       </div>
       <p class="text-xs italic ml-auto text-gray-500">
         TIP: You can write markdown!
+        <a
+          class=" text-blue-500"
+          href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet"
+          >Cheatsheet</a
+        >
       </p>
       <textarea
         :value="body"
@@ -20,11 +26,16 @@
         class="border w-full h-56"
       ></textarea>
       <div class="flex my-5">
-        <button class="btn-main bg-red-700 hover:bg-red-500">Delete</button>
+        <button
+          class="btn-main bg-red-700 hover:bg-red-500"
+          @click="deleteNote"
+        >
+          Delete
+        </button>
         <button class="btn-main ml-auto" type="submit">Save</button>
       </div>
     </form>
-    <section class="my-6 bg-gray-200 p-4 rounded-sm">
+    <section class="my-6 bg-gray-200 text-gray-600 p-4 rounded-sm">
       <h3>Preview</h3>
       <div v-html="compiledMarkdown"></div>
     </section>
@@ -109,6 +120,24 @@ export default {
           })
         })
       }
+      if (result.ok) {
+        this.$router.push("/notes")
+      } else {
+        this.alert = await result.json()
+      }
+    },
+    async deleteNote(e) {
+      e.preventDefault()
+      const result = await fetch(
+        `http://localhost:5000/api/notes/${this.note._id}`,
+        {
+          method: "delete",
+          headers: {
+            Authorization: localStorage.getItem("token"),
+            "Content-Type": "application/json"
+          }
+        }
+      )
       if (result.ok) {
         this.$router.push("/notes")
       } else {

@@ -7,14 +7,14 @@
     <header class="flex justify-between">
       <h2>{{ note.title }}</h2>
       <span
-        class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2"
+        class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700"
         >{{ note.category }}</span
       >
     </header>
 
     <p v-html="compiledNoteBody"></p>
     <footer class="flex justify-end mt-auto">
-      <p class="text-xs italic text-gray-400">{{ note.createdAt }}</p>
+      <p class="text-xs italic text-gray-500">{{ note.createdAt }}</p>
     </footer>
   </router-link>
 </template>
