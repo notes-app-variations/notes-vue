@@ -18,7 +18,7 @@ module.exports = {
     "no-debugger": process.env.NODE_ENV === "production" ? "error" : "off",
     "vue/valid-v-bind": 0,
     "prettier/prettier": [
-      "warning",
+      1,
       {
         semi: false
       }
