@@ -1,7 +1,7 @@
 <template>
   <div class="auth-page h-full flex justify-center items-center">
     <div class="auth-tabs h-64">
-      <ul class="flex border-b">
+      <ul class="flex border-b list-none">
         <li class="mr-1 w-1/2" :class="{ '-mb-px': currentTab == 'Login' }">
           <button
             @click="currentTab = 'Login'"

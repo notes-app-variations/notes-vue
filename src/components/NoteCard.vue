@@ -1,6 +1,6 @@
 <template>
   <router-link
-    class="note-card rounded shadow-md cursor-pointer p-4 overflow-hidden flex flex-col"
+    class="note-card rounded shadow-md cursor-pointer p-4 overflow-hidden flex flex-col text-gray-700"
     :class="bgColor"
     :to="{ name: 'Note', params: { note } }"
   >
@@ -22,15 +22,7 @@
 <script lang="ts">
 import marked from "marked"
 import { Component, Prop, Vue } from "vue-property-decorator"
-
-export interface Note {
-  title: string
-  body: string
-  category: string
-  userId: string
-  _id: string
-  createdAt: string
-}
+import { Note } from "@/api/vars"
 
 @Component
 export default class NoteCard extends Vue {

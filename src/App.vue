@@ -4,25 +4,38 @@
       <router-link to="/"
         ><h1 class="page-title text-gray-900 ml-3">notes.</h1></router-link
       >
-      <button @click="logout" class="btn-main mr-3">
+      <button v-if="isLoggedIn" @click="logout" class="btn-main mr-3">
         Logout
       </button>
     </header>
-    <router-view />
-    <footer class="flex justify-center">
-      <p class="m-auto text-sm font-light text-gray-500">Made with Vue</p>
+    <section class="h-100 flex-1">
+      <router-view />
+    </section>
+
+    <footer class="flex justify-center mt-2">
+      <p class="m-auto text-sm font-light text-gray-500">
+        Made with Vue &#x1F680;
+      </p>
     </footer>
   </div>
 </template>
 <script lang="ts">
 import Vue from "vue"
+import { GlobalVars, User } from "@/api/vars"
 export default Vue.extend({
   methods: {
-    logout(e: any) {
+    logout(e: Event) {
       e.preventDefault()
       localStorage.removeItem("token")
       localStorage.removeItem("user")
+      GlobalVars.token = ""
+      GlobalVars.user = {} as User
       this.$router.push("/")
+    }
+  },
+  computed: {
+    isLoggedIn() {
+      return this.$route.path != "/"
     }
   }
 })
