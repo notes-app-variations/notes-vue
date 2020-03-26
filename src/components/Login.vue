@@ -15,7 +15,7 @@
       required
     />
     <button class="w-full btn-main" type="submit" required>
-      Login
+      {{ loading ? "Loading..." : "Login" }}
     </button>
   </form>
 </template>
@@ -23,34 +23,30 @@
 <script lang="ts">
 import Vue from "vue"
 import Component from "vue-class-component"
+import { login } from "@/api/authActions.ts"
 
 @Component
 export default class Login extends Vue {
   private user = {
-    username: "",
     email: "",
     password: ""
   }
+  private alert = ""
+  private loading = false
 
-  private async login(e: any) {
+  private async login(e: Event) {
     e.preventDefault()
-    const response = await fetch("http://localhost:5000/api/login", {
-      method: "post",
-      headers: {
-        Accept: "application/json, text/plain, */*",
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(this.user)
-    })
-    if (response.status >= 200 && response.status <= 299) {
-      const userInfo = await response.json()
-      localStorage.setItem("token", userInfo.token)
-      localStorage.setItem("user", JSON.stringify(userInfo.user))
+    this.loading = true
+    try {
+      await login(this.user)
       if (this.$route.params.nextUrl != null)
-        this.$router.push(this.$route.params.nextUrl)
-      else this.$router.push("/notes")
-    } else {
-      console.log(response.status, response.statusText)
+        await this.$router.push(this.$route.params.nextUrl)
+      else {
+        await this.$router.push("/notes")
+      }
+    } catch (e) {
+      this.alert = e
+      this.loading = false
     }
   }
 }

@@ -34,6 +34,7 @@
 <script lang="ts">
 import Vue from "vue"
 import Component from "vue-class-component"
+import { register } from "@/api/authActions.ts"
 
 @Component
 export default class Register extends Vue {
@@ -44,25 +45,16 @@ export default class Register extends Vue {
   }
   private alert = ""
 
-  private async register(e: any) {
+  private async register(e: Event) {
     e.preventDefault()
-    const response = await fetch("http://localhost:5000/api/register", {
-      method: "post",
-      headers: {
-        Accept: "application/json, text/plain, */*",
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(this.user)
-    })
-    if (response.status >= 200 && response.status <= 299) {
-      const userInfo = await response.json()
-      localStorage.setItem("token", userInfo.token)
-      localStorage.setItem("user", JSON.stringify(userInfo.user))
+
+    try {
+      await register(this.user)
       if (this.$route.params.nextUrl != null)
-        this.$router.push(this.$route.params.nextUrl)
-      else this.$router.push("/notes")
-    } else {
-      this.alert = await response.json()
+        await this.$router.push(this.$route.params.nextUrl)
+      else await this.$router.push("/notes")
+    } catch (e) {
+      this.alert = e
     }
   }
 }

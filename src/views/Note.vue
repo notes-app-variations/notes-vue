@@ -32,11 +32,20 @@
         >
           Delete
         </button>
-        <button class="btn-main ml-auto" type="submit">Save</button>
+        <button class="btn-main ml-auto w-1/3" type="submit">Save</button>
+      </div>
+      <div
+        v-show="alert != ''"
+        class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
+        role="alert"
+      >
+        <span class="block sm:inline">{{ alert }}</span>
       </div>
     </form>
     <section class="my-6 bg-gray-200 text-gray-600 p-4 rounded-sm">
       <h3>Preview</h3>
+      <hr />
+
       <div v-html="compiledMarkdown"></div>
     </section>
   </div>
@@ -45,6 +54,7 @@
 <script>
 import marked from "marked"
 import CategorySelector from "../components/CategorySelector"
+import { postNote, editNote, deleteNote } from "@/api/actions.ts"
 export default {
   name: "Note",
   components: {
@@ -55,7 +65,8 @@ export default {
       default() {
         return {
           title: "New note",
-          body: "",
+          body:
+            "- Create lists\n- Or [links](https://www.google.com)\n---\n## A subheader\n| Tables        | Are           | Cool  |\n| ------------- |:-------------:| -----:|\n| col 3 is      | right-aligned | $1600 |\n| col 2 is      | centered      |   $12 |\n| zebra stripes | are neat      |    $1 |",
           category: "Work"
         }
       }
@@ -65,7 +76,8 @@ export default {
     return {
       title: this.note.title,
       body: this.note.body,
-      category: this.note.category
+      category: this.note.category,
+      alert: ""
     }
   },
   computed: {
@@ -86,62 +98,37 @@ export default {
     },
     async saveNote(e) {
       e.preventDefault()
-      let result
-      const uid = JSON.parse(localStorage.getItem("user"))._id
       if (this.note._id) {
-        result = await fetch(
-          `http://localhost:5000/api/notes/${this.note._id}`,
-          {
-            method: "put",
-            headers: {
-              Authorization: localStorage.getItem("token"),
-              "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-              title: this.title,
-              body: this.body,
-              category: this.category,
-              userId: uid
-            })
-          }
-        )
-      } else {
-        result = await fetch(`http://localhost:5000/api/notes/`, {
-          method: "post",
-          headers: {
-            Authorization: localStorage.getItem("token"),
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
+        try {
+          editNote(this.note._id, {
             title: this.title,
             body: this.body,
-            category: this.category,
-            userId: uid
+            category: this.category
           })
-        })
-      }
-      if (result.ok) {
-        this.$router.push("/notes")
+          this.$router.push("/notes")
+        } catch (e) {
+          this.alert = e
+        }
       } else {
-        this.alert = await result.json()
+        try {
+          postNote({
+            title: this.title,
+            body: this.body,
+            category: this.category
+          })
+          this.$router.push("/notes")
+        } catch (e) {
+          this.alert = e
+        }
       }
     },
     async deleteNote(e) {
       e.preventDefault()
-      const result = await fetch(
-        `http://localhost:5000/api/notes/${this.note._id}`,
-        {
-          method: "delete",
-          headers: {
-            Authorization: localStorage.getItem("token"),
-            "Content-Type": "application/json"
-          }
-        }
-      )
-      if (result.ok) {
+      try {
+        deleteNote(this.note._id)
         this.$router.push("/notes")
-      } else {
-        this.alert = await result.json()
+      } catch (e) {
+        this.alert = e
       }
     }
   }
