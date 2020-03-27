@@ -66,7 +66,7 @@ export default {
         return {
           title: "New note",
           body:
-            "- Create lists\n- Or [links](https://www.google.com)\n---\n## A subheader\n| Tables        | Are           | Cool  |\n| ------------- |:-------------:| -----:|\n| col 3 is      | right-aligned | $1600 |\n| col 2 is      | centered      |   $12 |\n| zebra stripes | are neat      |    $1 |",
+            "- Create lists\n- Or [links](https://www.google.com)\n---\n| Tables        | Are           | Cool  |\n| ------------- |:-------------:| -----:|\n| col 3 is      | right-aligned | $1600 |\n| col 2 is      | centered      |   $12 |\n| zebra stripes | are neat      |    $1 |",
           category: "Work"
         }
       }

@@ -4,7 +4,7 @@
     :class="bgColor"
     :to="{ name: 'Note', params: { note } }"
   >
-    <header class="flex justify-between">
+    <header class="flex justify-between mb-3">
       <h2>{{ note.title }}</h2>
       <span
         class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700"
@@ -12,9 +12,9 @@
       >
     </header>
 
-    <p v-html="compiledNoteBody"></p>
+    <p class="note-body" v-html="compiledNoteBody"></p>
     <footer class="flex justify-end mt-auto">
-      <p class="text-xs italic text-gray-500">{{ note.createdAt }}</p>
+      <p class="text-xs italic text-gray-500 mt-2">{{ note.createdAt }}</p>
     </footer>
   </router-link>
 </template>
@@ -47,4 +47,10 @@ export default class NoteCard extends Vue {
 }
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+.note-body {
+  li {
+    margin-left: 1rem;
+  }
+}
+</style>
